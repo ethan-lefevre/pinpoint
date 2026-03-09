@@ -1,16 +1,12 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-
-import Header from "./components/Header.jsx";
-import Home from "./pages/Home";
-import Rankings from "./pages/Rankings";
-import Results from "./pages/Results";
-import LetterOfTheWeek from "./pages/LotW";
-import Subscribe from "./pages/Paywall";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./pages/Login";
-
-import PageWrapper from "./components/PageWrapper";
+import Header from "./components/header.jsx";
+import Home from "./pages/home.jsx";
+import Rankings from "./pages/Rankings.jsx";
+import Results from "./pages/Results.jsx";
+import LetterOfTheWeek from "./pages/lotw.jsx";
+import Subscribe from "./pages/paywall.jsx";
+import ProtectedRoute from "./components/protectedroute.jsx";
+import Login from "./pages/login.jsx";
+import PageWrapper from "./components/pagewrapper.jsx";
 
 function AnimatedRoutes() {
 

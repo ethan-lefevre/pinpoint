@@ -1,5 +1,3 @@
-import React from "react";
-import Header from "../components/header"; // your existing header
 import "../index.css"; // import your main CSS
 
 function Paywall() {
@@ -9,8 +7,6 @@ function Paywall() {
   return (
     <div className="paywall-container">
     <div className="paywall-page min-h-screen w-full flex flex-col items-center">
-      {/* Header is always visible */}
-      <Header />
 
       <div className="paywall-card">
         <h1 className="paywall-title">

@@ -27,7 +27,10 @@ function Login() {
 
     if (data.token) {
 
+      // save token
       localStorage.setItem("token", data.token);
+
+      // redirect to rankings
       navigate("/rankings");
 
     } else {
@@ -39,62 +42,32 @@ function Login() {
   }
 
   return (
+    <div>
 
-    <div className="login-page">
+      <h1>Login</h1>
 
-      <div className="login-card">
+      <form onSubmit={handleLogin}>
 
-        <h1 className="login-title">Member Login</h1>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e)=>setEmail(e.target.value)}
+        />
 
-        <p className="login-subtitle">
-          Access rankings, tournament results, and Letter of the Week.
-        </p>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)}
+        />
 
-        <form className="login-form" onSubmit={handleLogin}>
+        <button type="submit">Login</button>
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e)=>setEmail(e.target.value)}
-            className="login-input"
-            required
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e)=>setPassword(e.target.value)}
-            className="login-input"
-            required
-          />
-
-          <button type="submit" className="login-button">
-            Login
-          </button>
-
-        </form>
-
-        <div className="login-footer">
-
-          <p>Don't have access yet?</p>
-
-          <a
-            href="/subscribe"
-            className="subscribe-link"
-          >
-            Subscribe here
-          </a>
-
-        </div>
-
-      </div>
+      </form>
 
     </div>
-
   );
-
 }
 
 export default Login;

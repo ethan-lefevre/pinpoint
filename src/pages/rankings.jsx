@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
 
+const API_URL = "https://pinpoint-backend.onrender.com"
+
 function Rankings() {
 
   const divisions = ["D1","D2","D3","D4"]
@@ -121,4 +123,4 @@ function Rankings() {
 
 }
 
-export default Rankings
+export default Rankings 

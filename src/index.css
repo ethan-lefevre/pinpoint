@@ -1,0 +1,514 @@
+main {
+  padding-top: 0;
+}
+
+/* FONT */
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Oswald', sans-serif;
+  background: #f4f6f8;
+}
+
+/* RESET */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* PAGE */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f4f7fb;
+  color: #1a1a1a;
+  line-height: 1.6;
+  padding-top: 0px;
+}
+
+/* ===== HEADER BASE ===== */
+
+.header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #424242;
+  color: white;
+  z-index: 1000;
+  transition: all 0.35s ease;
+}
+
+/* ===== INNER CONTAINER ===== */
+
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  padding: 26px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: padding 0.35s ease;
+}
+
+/* ===== COLLAPSED STATE ===== */
+
+.header.collapsed {
+  background: #424242;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+}
+
+.header.collapsed .header-inner {
+  padding: 12px 30px;
+  justify-content: center;
+}
+
+/* ===== LOGO ===== */
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo {
+  height: 44px;
+  transition: transform 0.35s ease;
+}
+
+.header.collapsed .logo {
+  transform: scale(0.8);
+}
+
+.site-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+  transition: opacity 0.3s ease;
+}
+
+.header.collapsed .site-title {
+  opacity: 0;
+}
+
+/* ===== NAVIGATION ===== */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  transition: all 0.3s ease;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+}
+
+/* ===== NAV HIDE ANIMATION ===== */
+
+.nav-links.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+/* ===== SUBSCRIBE BUTTON ===== */
+
+.subscribe-btn {
+  background: #e63946;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* ===== LOGOUT BUTTON ===== */
+
+.logout-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ================================
+   GLOBAL STYLING
+================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #f5f6f8;
+  color: #1a1a1a;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+/* ================================
+   LAYOUT CONTAINER
+================================ */
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+
+/* ================================
+   HOME PAGE
+================================ */
+
+.home-container {
+  text-align: center;
+  margin-top: 120px;
+}
+
+.home-title {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.home-subtitle {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.home-button {
+  padding: 14px 28px;
+  background: #111;
+  color: white;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background .2s;
+}
+
+.home-button:hover {
+  background: #333;
+}
+
+
+/* LOGIN PAGE */
+
+.login-page{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:70vh;
+}
+
+.login-card{
+  background:white;
+  padding:40px;
+  border-radius:10px;
+  width:100%;
+  max-width:400px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  text-align:center;
+}
+
+.login-title{
+  font-size:28px;
+  margin-bottom:8px;
+}
+
+.login-subtitle{
+  color:#666;
+  font-size:14px;
+  margin-bottom:24px;
+}
+
+.login-form{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.login-input{
+  padding:12px;
+  font-size:15px;
+  border:1px solid #ddd;
+  border-radius:6px;
+  transition:border 0.2s;
+}
+
+.login-input:focus{
+  outline:none;
+  border-color:#1e73be;
+}
+
+.login-button{
+  padding:12px;
+  background:#000000;
+  color:white;
+  border:none;
+  border-radius:6px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:background 0.2s;
+}
+
+.login-button:hover{
+  background:#155a94;
+}
+
+.login-footer{
+  margin-top:20px;
+  font-size:14px;
+}
+
+.subscribe-link{
+  display:inline-block;
+  margin-top:6px;
+  color:#1e73be;
+  font-weight:600;
+  text-decoration:none;
+}
+
+.subscribe-link:hover{
+  text-decoration:underline;
+}
+
+
+/* ================================
+   BUTTON ROW (RANKINGS FILTERS)
+================================ */
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.button-row button {
+  background: #e5e5e5;
+  color: #333;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.button-row button.active {
+  background: #111;
+  color: white;
+}
+
+
+/* ================================
+   RANKINGS CARD
+================================ */
+
+.rankings-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+}
+
+.rankings-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #444;
+}
+
+.rank-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.rank-row:last-child {
+  border-bottom: none;
+}
+
+.rank-number {
+  width: 40px;
+  font-weight: 600;
+}
+
+
+/* podium highlights */
+
+.gold {
+  background: rgba(255,215,0,0.15);
+}
+
+.silver {
+  background: rgba(192,192,192,0.15);
+}
+
+.bronze {
+  background: rgba(205,127,50,0.15);
+}
+
+.footer-note {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #777;
+  text-align: center;
+}
+
+
+/* ================================
+   RESULTS PAGE
+================================ */
+
+.results-page {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.results-title {
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.tournament-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.tournament-name {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.tournament-meta {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table th {
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+  padding: 10px 6px;
+  font-size: 14px;
+}
+
+.results-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.results-table tr:hover {
+  background: #f7f7f7;
+}
+
+.results-loading {
+  text-align: center;
+  margin-top: 80px;
+  font-size: 18px;
+}
+
+
+/* ================================
+   ARTICLE / LOTW
+================================ */
+
+.article-container {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 40px;
+}
+
+.article-title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.article-meta {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.article-body p {
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.submit-box {
+  background: #111;
+  color: white;
+  border-radius: 8px;
+  padding: 25px;
+  text-align: center;
+}
+
+.submit-box h2 {
+  margin-bottom: 10px;
+}
+
+.submit-box p {
+  margin-bottom: 10px;
+}
+
+.email {
+  font-weight: 500;
+}
+
+.email-address {
+  font-size: 18px;
+}
+
+
+/* ================================
+   LOADING STATES
+================================ */
+
+.loading {
+  text-align: center;
+  margin-top: 80px;
+  font-size: 18px;
+  color: #555;
+}

@@ -3,7 +3,7 @@ import { AnimatePresence } from "framer-motion";
 
 import Header from "./components/header";
 import Home from "./pages/home";
-import Rankings from "./pages/Rankings";
+import Rankings from "./pages/rankings";
 import Results from "./pages/results";
 import LetterOfTheWeek from "./pages/lotw";
 import Subscribe from "./pages/paywall";

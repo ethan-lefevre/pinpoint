@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../components/Header"; // your existing header
+import Header from "../components/header"; // your existing header
 import "../index.css"; // import your main CSS
 
 function Paywall() {

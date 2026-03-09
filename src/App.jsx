@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import Header from "./components/header";
-import Home from "./pages/home";
-import Rankings from "./pages/rankings";
-import Results from "./pages/results";
-import LetterOfTheWeek from "./pages/lotw";
-import Subscribe from "./pages/paywall";
+import Home from "./pages/Home";
+import Rankings from "./pages/Rankings";
+import Results from "./pages/Results";
+import LetterOfTheWeek from "./pages/LotW";
+import Subscribe from "./pages/Paywall";
 import ProtectedRoute from "./components/protectedroute";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 
 import PageWrapper from "./components/pagewrapper";
 

@@ -1,65 +1,64 @@
-import { useEffect, useState } from "react"
-import "../index.css"
+import { useEffect, useState } from "react";
+import "../index.css";
+import { API_URL } from "../config";
 
 function Results() {
-
-  const [tournaments, setTournaments] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [tournaments, setTournaments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-
     async function fetchResults() {
-
       try {
+        const token = localStorage.getItem("token");
 
-        const token = localStorage.getItem("token")
-
-        const response = await fetch("http://localhost:5000/results", {
+        const response = await fetch(`${API_URL}/results`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        const data = await response.json()
-
-        if (data.tournaments) {
-          setTournaments(data.tournaments)
+        if (!response.ok) {
+          throw new Error(`Failed to fetch results: ${response.status}`);
         }
 
-        setLoading(false)
+        const data = await response.json();
 
+        if (data.tournaments) {
+          setTournaments(data.tournaments);
+        }
       } catch (error) {
-        console.error("Results fetch error:", error)
+        console.error("Results fetch error:", error);
+        setError("Failed to load results.");
+      } finally {
+        setLoading(false);
       }
-
     }
 
-    fetchResults()
-
-  }, [])
+    fetchResults();
+  }, []);
 
   if (loading) {
-    return <div className="results-loading">Loading results...</div>
+    return <div className="results-loading">Loading results...</div>;
+  }
+
+  if (error) {
+    return <div className="results-loading">{error}</div>;
   }
 
   return (
-
     <div className="results-page">
-
       <h1 className="results-title">Tournament Results</h1>
 
       {tournaments.map((tournament, index) => (
-
         <div key={index} className="tournament-card">
-
           <h2 className="tournament-name">{tournament.name}</h2>
 
           <p className="tournament-meta">
-            {tournament.date} • {tournament.location}
+            {tournament.date} | {tournament.location}
           </p>
 
           <table className="results-table">
-
             <thead>
               <tr>
                 <th>Weight</th>
@@ -69,7 +68,6 @@ function Results() {
             </thead>
 
             <tbody>
-
               {tournament.matches?.map((match, i) => (
                 <tr key={i}>
                   <td>{match.weight}</td>
@@ -77,19 +75,12 @@ function Results() {
                   <td>{match.runnerUp}</td>
                 </tr>
               ))}
-
             </tbody>
-
           </table>
-
         </div>
-
       ))}
-
     </div>
-
-  )
-
+  );
 }
 
-export default Results
+export default Results;

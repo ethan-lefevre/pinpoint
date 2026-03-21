@@ -29,7 +29,9 @@ app.post("/signup", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const existingUser = await User.findOne({ email: normalizedEmail });
 
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
@@ -38,7 +40,7 @@ app.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
     });
 
@@ -48,6 +50,7 @@ app.post("/signup", async (req, res) => {
       message: "User created successfully",
     });
   } catch (error) {
+    console.error("Signup error:", error);
     res.status(500).json({
       error: "Signup failed",
     });
@@ -58,13 +61,27 @@ app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+
+    console.log("LOGIN ATTEMPT");
+    console.log("email from body:", JSON.stringify(email));
+    console.log("normalized email:", JSON.stringify(normalizedEmail));
+    console.log("password from body:", JSON.stringify(password));
+
+    const user = await User.findOne({ email: normalizedEmail });
+
+    console.log("user found:", !!user);
 
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    console.log("db email:", user.email);
+    console.log("db hash:", user.password);
+
     const validPassword = await bcrypt.compare(password, user.password);
+
+    console.log("password valid:", validPassword);
 
     if (!validPassword) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -78,6 +95,7 @@ app.post("/login", async (req, res) => {
       subscribed: user.subscribed,
     });
   } catch (error) {
+    console.error("Login error:", error);
     res.status(500).json({
       error: "Login failed",
     });
@@ -85,12 +103,17 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/profile", authMiddleware, async (req, res) => {
-  const user = await User.findById(req.user.id);
+  try {
+    const user = await User.findById(req.user.id);
 
-  res.json({
-    email: user.email,
-    subscribed: user.subscribed,
-  });
+    res.json({
+      email: user.email,
+      subscribed: user.subscribed,
+    });
+  } catch (error) {
+    console.error("Profile error:", error);
+    res.status(500).json({ error: "Failed to load profile" });
+  }
 });
 
 app.get("/results", authMiddleware, subscriptionMiddleware, (req, res) => {
@@ -108,7 +131,6 @@ app.post("/subscribe", authMiddleware, async (req, res) => {
     const user = await User.findById(req.user._id);
 
     user.subscribed = true;
-
     await user.save();
 
     res.json({
@@ -116,6 +138,7 @@ app.post("/subscribe", authMiddleware, async (req, res) => {
       subscribed: true,
     });
   } catch (error) {
+    console.error("Subscription error:", error);
     res.status(500).json({
       error: "Subscription failed",
     });
@@ -131,7 +154,7 @@ app.get("/rankings", authMiddleware, subscriptionMiddleware, async (req, res) =>
       lastUpdated: new Date().toISOString(),
     });
   } catch (error) {
-    console.error(error);
+    console.error("Rankings error:", error);
     res.status(500).json({ error: "Failed to load rankings" });
   }
 });

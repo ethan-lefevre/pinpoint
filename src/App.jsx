@@ -1,23 +1,22 @@
-import Header from "./components/header.jsx";
-import Home from "./pages/home.jsx";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+
+import Header from "./components/Header.jsx";
+import Home from "./pages/Home.jsx";
 import Rankings from "./pages/Rankings.jsx";
 import Results from "./pages/Results.jsx";
-import LetterOfTheWeek from "./pages/lotw.jsx";
-import Subscribe from "./pages/paywall.jsx";
-import ProtectedRoute from "./components/protectedroute.jsx";
-import Login from "./pages/login.jsx";
-import PageWrapper from "./components/pagewrapper.jsx";
+import LetterOfTheWeek from "./pages/LotW.jsx";
+import Subscribe from "./pages/Paywall.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import Login from "./pages/Login.jsx";
+import PageWrapper from "./components/PageWrapper.jsx";
 
 function AnimatedRoutes() {
-
   const location = useLocation();
 
   return (
-
     <AnimatePresence mode="wait">
-
       <Routes location={location} key={location.pathname}>
-
         <Route
           path="/"
           element={
@@ -77,29 +76,18 @@ function AnimatedRoutes() {
             </ProtectedRoute>
           }
         />
-
       </Routes>
-
     </AnimatePresence>
-
   );
-
 }
 
 function App() {
-
   return (
-
     <BrowserRouter>
-
       <Header />
-
       <AnimatedRoutes />
-
     </BrowserRouter>
-
   );
-
 }
 
 export default App;

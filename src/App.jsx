@@ -7,9 +7,9 @@ import Rankings from "./pages/Rankings.jsx";
 import Results from "./pages/Results.jsx";
 import LetterOfTheWeek from "./pages/lotw.jsx";
 import Subscribe from "./pages/paywall.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ProtectedRoute from "./components/protectedroute.jsx";
 import Login from "./pages/login.jsx";
-import PageWrapper from "./components/PageWrapper.jsx";
+import PageWrapper from "./components/pagewrapper.jsx";
 
 function AnimatedRoutes() {
   const location = useLocation();

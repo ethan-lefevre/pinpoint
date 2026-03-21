@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-import Header from "./components/Header.jsx";
+import Header from "./components/header.jsx";
 import Home from "./pages/Home.jsx";
 import Rankings from "./pages/Rankings.jsx";
 import Results from "./pages/Results.jsx";

@@ -1,47 +1,18 @@
-const https = require("https");
+const fs = require("fs");
+const path = require("path");
 const csv = require("csv-parser");
-const { rankingsSheetUrl } = require("../config");
 
 function normalizeValue(value) {
   return typeof value === "string" ? value.trim() : value;
 }
 
-function fetchCsv(url, redirects = 0) {
-  return new Promise((resolve, reject) => {
-    https
-      .get(url, (response) => {
-        const { statusCode = 0, headers } = response;
-
-        if (
-          statusCode >= 300 &&
-          statusCode < 400 &&
-          headers.location &&
-          redirects < 5
-        ) {
-          response.resume();
-          resolve(fetchCsv(headers.location, redirects + 1));
-          return;
-        }
-
-        if (statusCode !== 200) {
-          response.resume();
-          reject(new Error(`Rankings sheet request failed with ${statusCode}`));
-          return;
-        }
-
-        resolve(response);
-      })
-      .on("error", reject);
-  });
-}
-
 async function getRankings() {
-  const response = await fetchCsv(rankingsSheetUrl);
+  const filePath = path.join(__dirname, "rankings.csv");
 
   return new Promise((resolve, reject) => {
     const rankings = {};
 
-    response
+    fs.createReadStream(filePath)
       .pipe(
         csv({
           mapHeaders: ({ header }) => normalizeValue(header).toUpperCase(),
@@ -78,11 +49,7 @@ async function getRankings() {
         }
 
         if (Object.keys(rankings).length === 0) {
-          reject(
-            new Error(
-              "Rankings sheet loaded, but no ranking rows were parsed from the CSV."
-            )
-          );
+          reject(new Error("Rankings CSV loaded, but no ranking rows were parsed."));
           return;
         }
 

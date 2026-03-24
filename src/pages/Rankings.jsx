@@ -106,7 +106,7 @@ function Rankings() {
         })}
 
         <div className="footer-note">
-          These rankings are free. Feel free to share!
+          We worked hard to give you these rankings, please no unauthorized sharing!
         </div>
       </div>
     </div>

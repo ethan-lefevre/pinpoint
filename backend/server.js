@@ -1,3 +1,4 @@
+const path = require("path");
 const tournaments = require("./data/results");
 const getRankings = require("./data/rankings");
 const letter = require("./data/letter");
@@ -16,8 +17,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve files from /public
+app.use(express.static(path.join(__dirname, "public")));
+
+// Loading screen at the root domain
 app.get("/", (req, res) => {
-  res.send("Backend is running");
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.post("/test", (req, res) => {
@@ -128,7 +133,7 @@ app.get("/letters", authMiddleware, subscriptionMiddleware, (req, res) => {
 
 app.post("/subscribe", authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user.id);
 
     user.subscribed = true;
     await user.save();

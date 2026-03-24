@@ -1,12 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
 
-body {
-  margin: 0;
-  font-family: 'Oswald', sans-serif;
-  background: #f4f6f8;
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #0f172a;
+  --bg-alt: #111c33;
+  --surface: #16233a;
+  --surface-2: #1d2d4a;
+  --header: #0b1324;
+  --header-2: #08101f;
+  --text: #e5edf8;
+  --muted: #9fb0c9;
+  --border: #273754;
+  --accent: #60a5fa;
+  --accent-2: #3b82f6;
+  --danger: #dc3545;
+  --danger-hover: #c82333;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
 }
-
-/* RESET */
 
 * {
   margin: 0;
@@ -14,103 +25,119 @@ body {
   box-sizing: border-box;
 }
 
-/* PAGE */
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html,
+body {
+  margin: 0;
+  background: #0f172a;
+}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f4f7fb;
-  color: #1a1a1a;
+  color: var(--text);
   line-height: 1.6;
-  padding-top: 0px;
 }
 
-/* ===== HEADER BASE ===== */
+#root {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* ===== HEADER ===== */
 
 .header {
   position: sticky;
   top: 0;
   width: 100%;
-  background: #424242;
-  color: white;
+  background: linear-gradient(180deg, var(--header) 0%, var(--header-2) 100%);
+  color: #fff;
   z-index: 1000;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.12);
   transition: all 0.35s ease;
 }
 
-/* ===== INNER CONTAINER ===== */
-
 .header-inner {
   max-width: 1200px;
-  margin: auto;
-  padding: 26px 30px;
+  margin: 0 auto;
+  padding: 22px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   transition: padding 0.35s ease;
 }
 
-/* ===== COLLAPSED STATE ===== */
-
 .header.collapsed {
-  background: #424242;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
 }
 
 .header.collapsed .header-inner {
   padding: 12px 30px;
-  justify-content: center;
 }
-
-/* ===== LOGO ===== */
 
 .logo-area {
   display: flex;
   align-items: center;
   gap: 12px;
-  text-decoration: none;
+  min-width: 0;
 }
 
 .logo {
   height: 44px;
+  width: auto;
+  display: block;
   transition: transform 0.35s ease;
 }
 
 .header.collapsed .logo {
-  transform: scale(0.8);
+  transform: scale(0.9);
 }
 
 .site-title {
+  font-family: 'Oswald', sans-serif;
   font-size: 24px;
-  font-weight: 700;
-  color: white;
-  letter-spacing: 0.5px;
-  transition: opacity 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  white-space: nowrap;
 }
-
-.header.collapsed .site-title {
-  opacity: 0;
-}
-
-/* ===== NAVIGATION ===== */
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 22px;
   transition: all 0.3s ease;
 }
 
-.nav-links a {
-  text-decoration: none;
-  color: white;
+.nav-links a,
+.logout-button {
+  color: #d7e6ff;
   font-weight: 500;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
-.nav-links a:hover {
-  opacity: 1;
+.nav-links a:hover,
+.logout-button:hover {
+  color: #ffffff;
 }
-
-/* ===== NAV HIDE ANIMATION ===== */
 
 .nav-links.hidden {
   opacity: 0;
@@ -118,185 +145,178 @@ body {
   pointer-events: none;
 }
 
-/* ===== SUBSCRIBE BUTTON ===== */
-
 .subscribe-btn {
-  background: #e63946;
+  background: var(--danger);
   padding: 8px 16px;
   border-radius: 6px;
   font-weight: 600;
+  color: white;
 }
 
-/* ===== LOGOUT BUTTON ===== */
+.subscribe-btn:hover {
+  background: var(--danger-hover);
+}
 
 .logout-button {
   background: none;
   border: none;
-  color: white;
-  font-size: 16px;
   cursor: pointer;
+  font-size: 16px;
 }
 
-/* ================================
-   GLOBAL STYLING
-================================ */
+/* ===== LAYOUT ===== */
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  background-color: #f5f6f8;
-  color: #1a1a1a;
-  line-height: 1.6;
-}
-
-a {
-  text-decoration: none;
-}
-
-
-/* ================================
-   LAYOUT CONTAINER
-================================ */
-
-.container {
-  max-width: 900px;
-  margin: auto;
+.container,
+.results-page {
+  max-width: 960px;
+  margin: 0 auto;
   padding: 40px 20px;
 }
 
-
-/* ================================
-   HOME PAGE
-================================ */
+/* ===== HOME ===== */
 
 .home-container {
   text-align: center;
   margin-top: 120px;
+  padding: 0 20px;
 }
 
 .home-title {
-  font-size: 42px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2.7rem, 6vw, 4.3rem);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #f8fbff;
+  margin-bottom: 12px;
 }
 
 .home-subtitle {
   font-size: 18px;
-  color: #666;
-  margin-bottom: 40px;
+  color: var(--muted);
+  margin-bottom: 36px;
 }
 
 .home-buttons {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 14px;
 }
 
 .home-button {
-  padding: 14px 28px;
-  background: #111;
+  display: inline-block;
+  padding: 13px 24px;
+  background: var(--accent);
   color: white;
+  border: 1px solid transparent;
   border-radius: 6px;
-  font-weight: 500;
-  transition: background .2s;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .home-button:hover {
-  background: #333;
+  background: var(--accent-2);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(59, 130, 246, 0.22);
 }
 
+/* ===== LOGIN ===== */
 
-/* LOGIN PAGE */
-
-.login-page{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:70vh;
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 24px;
 }
 
-.login-card{
-  background:white;
-  padding:40px;
-  border-radius:10px;
-  width:100%;
-  max-width:400px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  text-align:center;
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 36px;
+  text-align: center;
 }
 
-.login-title{
-  font-size:28px;
-  margin-bottom:8px;
+.login-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
-.login-subtitle{
-  color:#666;
-  font-size:14px;
-  margin-bottom:24px;
+.login-subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 24px;
 }
 
-.login-form{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.login-input{
-  padding:12px;
-  font-size:15px;
-  border:1px solid #ddd;
-  border-radius:6px;
-  transition:border 0.2s;
+.login-input {
+  padding: 12px 14px;
+  font-size: 15px;
+  color: var(--text);
+  background: #132038;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.login-input:focus{
-  outline:none;
-  border-color:#1e73be;
+.login-input::placeholder {
+  color: #7d8da8;
 }
 
-.login-button{
-  padding:12px;
-  background:#000000;
-  color:white;
-  border:none;
-  border-radius:6px;
-  font-size:15px;
-  font-weight:600;
-  cursor:pointer;
-  transition:background 0.2s;
+.login-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
 }
 
-.login-button:hover{
-  background:#155a94;
+.login-button {
+  padding: 12px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.login-footer{
-  margin-top:20px;
-  font-size:14px;
+.login-button:hover {
+  background: var(--accent-2);
 }
 
-.subscribe-link{
-  display:inline-block;
-  margin-top:6px;
-  color:#1e73be;
-  font-weight:600;
-  text-decoration:none;
+.login-footer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--muted);
 }
 
-.subscribe-link:hover{
-  text-decoration:underline;
+.subscribe-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: #8cc0ff;
+  font-weight: 600;
 }
 
+.subscribe-link:hover {
+  text-decoration: underline;
+}
 
-/* ================================
-   BUTTON ROW (RANKINGS FILTERS)
-================================ */
+/* ===== BUTTON ROW ===== */
 
 .button-row {
   display: flex;
@@ -306,44 +326,52 @@ a {
 }
 
 .button-row button {
-  background: #e5e5e5;
-  color: #333;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 4px;
   padding: 6px 12px;
   font-size: 14px;
+  cursor: pointer;
+}
+
+.button-row button:hover {
+  background: #26395d;
 }
 
 .button-row button.active {
-  background: #111;
+  background: var(--accent);
+  border-color: var(--accent);
   color: white;
 }
 
+/* ===== CARDS ===== */
 
-/* ================================
-   RANKINGS CARD
-================================ */
-
-.rankings-card {
-  background: white;
+.rankings-card,
+.tournament-card,
+.article-container {
+  background: var(--surface);
   border-radius: 8px;
   padding: 20px;
   margin-top: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .rankings-header {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
   margin-bottom: 15px;
   font-weight: 600;
-  color: #444;
+  color: #c7d3e6;
 }
 
 .rank-row {
   display: flex;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(159, 176, 201, 0.14);
 }
 
 .rank-row:last-child {
@@ -352,64 +380,51 @@ a {
 
 .rank-number {
   width: 40px;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--accent);
 }
 
-
-/* podium highlights */
-
 .gold {
-  background: rgba(255,215,0,0.15);
+  background: rgba(255, 215, 0, 0.09);
 }
 
 .silver {
-  background: rgba(192,192,192,0.15);
+  background: rgba(192, 192, 192, 0.08);
 }
 
 .bronze {
-  background: rgba(205,127,50,0.15);
+  background: rgba(205, 127, 50, 0.09);
 }
 
 .footer-note {
   margin-top: 15px;
   font-size: 13px;
-  color: #777;
+  color: var(--muted);
   text-align: center;
 }
 
-
-/* ================================
-   RESULTS PAGE
-================================ */
-
-.results-page {
-  max-width: 900px;
-  margin: auto;
-  padding: 40px 20px;
-}
+/* ===== RESULTS ===== */
 
 .results-title {
+  font-family: 'Oswald', sans-serif;
   font-size: 34px;
-  font-weight: 700;
-  margin-bottom: 30px;
-}
-
-.tournament-card {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   margin-bottom: 30px;
 }
 
 .tournament-name {
+  font-family: 'Oswald', sans-serif;
   font-size: 22px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .tournament-meta {
   font-size: 14px;
-  color: #666;
+  color: var(--muted);
   margin-bottom: 15px;
 }
 
@@ -420,49 +435,44 @@ a {
 
 .results-table th {
   text-align: left;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid var(--border);
   padding: 10px 6px;
   font-size: 14px;
+  color: #d4deed;
 }
 
 .results-table td {
   padding: 8px 6px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(159, 176, 201, 0.12);
   font-size: 14px;
 }
 
 .results-table tr:hover {
-  background: #f7f7f7;
+  background: rgba(255, 255, 255, 0.025);
 }
 
-.results-loading {
+.results-loading,
+.loading {
   text-align: center;
   margin-top: 80px;
   font-size: 18px;
+  color: var(--muted);
 }
 
-
-/* ================================
-   ARTICLE / LOTW
-================================ */
-
-.article-container {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 30px;
-  margin-bottom: 40px;
-}
+/* ===== ARTICLE ===== */
 
 .article-title {
+  font-family: 'Oswald', sans-serif;
   font-size: 30px;
-  font-weight: 700;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   margin-bottom: 10px;
 }
 
 .article-meta {
   font-size: 14px;
-  color: #666;
+  color: var(--muted);
   margin-bottom: 25px;
 }
 
@@ -472,14 +482,18 @@ a {
 }
 
 .submit-box {
-  background: #111;
+  background: linear-gradient(180deg, #0f1b31 0%, #0b1426 100%);
   color: white;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 25px;
   text-align: center;
+  box-shadow: var(--shadow);
 }
 
 .submit-box h2 {
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
   margin-bottom: 10px;
 }
 
@@ -488,21 +502,62 @@ a {
 }
 
 .email {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .email-address {
   font-size: 18px;
+  color: #b9d9ff;
 }
 
+/* ===== RESPONSIVE ===== */
 
-/* ================================
-   LOADING STATES
-================================ */
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 16px 18px;
+    flex-wrap: wrap;
+  }
 
-.loading {
-  text-align: center;
-  margin-top: 80px;
-  font-size: 18px;
-  color: #555;
+  .nav-links {
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .home-container {
+    margin-top: 90px;
+  }
+
+  .home-title {
+    font-size: 2.7rem;
+  }
+
+  .results-title,
+  .article-title {
+    font-size: 28px;
+  }
+
+  .rankings-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .login-card,
+  .rankings-card,
+  .tournament-card,
+  .article-container,
+  .submit-box {
+    padding: 18px;
+  }
+
+  .home-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home-button {
+    width: 100%;
+    max-width: 280px;
+  }
 }

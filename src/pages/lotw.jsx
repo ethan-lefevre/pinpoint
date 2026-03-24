@@ -63,16 +63,16 @@ function LetterOfTheWeek() {
       </div>
 
       <div className="submit-box">
-        <h2>Want to be featured?</h2>
+        <h2>Did we miss something?</h2>
 
         <p>
           We want to hear from <strong>YOU.</strong>
         </p>
 
-        <p className="email">Email submissions to:</p>
+        <p className="email">Email:</p>
 
         <p className="email-address">
-          <em>submissions@pinpointsports.com</em>
+          <em>lefevre0601@gmail.com</em>
         </p>
       </div>
     </div>

@@ -13,10 +13,9 @@ const subscriptionMiddleware = require("./middleware/subscriptionMiddleware");
 const User = require("./models/User");
 const { jwtSecret, port } = require("./config");
 const stripeRoutes = require("./routes/stripe");
+const app = express();
 
 app.use("/api/stripe", stripeRoutes);
-
-const app = express();
 
 app.use(cors());
 app.use(express.json());

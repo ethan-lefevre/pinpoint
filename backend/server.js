@@ -1,3 +1,4 @@
+require("dotenv").config();
 const path = require("path");
 const tournaments = require("./data/results");
 const getRankings = require("./data/rankings");
@@ -11,6 +12,9 @@ const authMiddleware = require("./middleware/authMiddleware");
 const subscriptionMiddleware = require("./middleware/subscriptionMiddleware");
 const User = require("./models/User");
 const { jwtSecret, port } = require("./config");
+const stripeRoutes = require("./routes/stripe");
+
+app.use("/api/stripe", stripeRoutes);
 
 const app = express();
 

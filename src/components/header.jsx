@@ -30,7 +30,7 @@ function Header() {
       <div className="header-inner">
 
         <Link to="/" className="logo-area">
-          <img src="/pinpoint_michigan_transparent_smooth.png" alt="PinPoint Michigan" className="logo"/>
+          <img src="/pplogo.png" alt="PinPoint Michigan" className="logo"/>
           <span className="site-title">PinPoint Michigan</span>
         </Link>
 

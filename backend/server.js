@@ -13,12 +13,18 @@ const subscriptionMiddleware = require("./middleware/subscriptionMiddleware");
 const User = require("./models/User");
 const { jwtSecret, port } = require("./config");
 const stripeRoutes = require("./routes/stripe");
+const stripeWebhookRoutes = require("./routes/stripeWebhook");
+
 const app = express();
 
-app.use("/api/stripe", stripeRoutes);
+// IMPORTANT: Stripe webhook route must come BEFORE express.json()
+app.use("/api/stripe", stripeWebhookRoutes);
 
 app.use(cors());
 app.use(express.json());
+
+// Normal Stripe routes can come after express.json()
+app.use("/api/stripe", stripeRoutes);
 
 // Serve files from /public
 app.use(express.static(path.join(__dirname, "public")));
@@ -117,6 +123,7 @@ app.get("/profile", authMiddleware, async (req, res) => {
     res.json({
       email: user.email,
       subscribed: user.subscribed,
+      subscriptionStatus: user.subscriptionStatus,
     });
   } catch (error) {
     console.error("Profile error:", error);
@@ -132,25 +139,6 @@ app.get("/results", authMiddleware, subscriptionMiddleware, (req, res) => {
 
 app.get("/letters", authMiddleware, subscriptionMiddleware, (req, res) => {
   res.json(letter);
-});
-
-app.post("/subscribe", authMiddleware, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-
-    user.subscribed = true;
-    await user.save();
-
-    res.json({
-      message: "Subscription activated",
-      subscribed: true,
-    });
-  } catch (error) {
-    console.error("Subscription error:", error);
-    res.status(500).json({
-      error: "Subscription failed",
-    });
-  }
 });
 
 app.get("/rankings", authMiddleware, subscriptionMiddleware, async (req, res) => {

@@ -7,11 +7,6 @@ function Paywall({ user }) {
 
 const handleSubscribe = async () => {
   try {
-    if (!user?._id || !user?.email) {
-      setError("You must be logged in to subscribe");
-      return;
-    }
-
     setLoading(true);
     setError("");
 
@@ -20,10 +15,7 @@ const handleSubscribe = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        userId: user._id,
-        email: user.email,
-      }),
+      body: JSON.stringify({}),
     });
 
     const data = await res.json();

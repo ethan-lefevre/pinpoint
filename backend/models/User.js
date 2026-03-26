@@ -1,28 +1,41 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
 
   password: {
     type: String,
-    required: true
+    required: true,
   },
 
   subscribed: {
     type: Boolean,
-    default: false
+    default: false,
+  },
+
+  stripeCustomerId: {
+    type: String,
+    default: null,
+  },
+
+  stripeSubscriptionId: {
+    type: String,
+    default: null,
+  },
+
+  subscriptionStatus: {
+    type: String,
+    default: null,
   },
 
   createdAt: {
     type: Date,
-    default: Date.now
-  }
-
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

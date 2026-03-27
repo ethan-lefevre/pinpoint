@@ -11,6 +11,7 @@ import Signup from "./pages/Signup.jsx";
 import ProtectedRoute from "./components/protectedroute.jsx";
 import Login from "./pages/login.jsx";
 import PageWrapper from "./components/pagewrapper.jsx";
+import Profile from "./pages/profile.jsx";
 
 function AnimatedRoutes() {
   const location = useLocation();

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { API_URL } from "../config";
 import "../index.css";
 
 function Header() {
@@ -24,28 +25,30 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔥 fetch subscription status if logged in
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      setSubscribed(false);
+      return;
+    }
 
     async function fetchProfile() {
       try {
-        const res = await fetch(
-          "https://pinpoint-srng.onrender.com/profile",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await fetch(`${API_URL}/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const data = await res.json();
 
         if (res.ok) {
-          setSubscribed(data.subscribed);
+          setSubscribed(!!data.subscribed);
+        } else {
+          setSubscribed(false);
         }
       } catch (err) {
         console.error("Profile fetch failed:", err);
+        setSubscribed(false);
       }
     }
 
@@ -65,25 +68,23 @@ function Header() {
           <Link to="/results">Results</Link>
           <Link to="/lotw">Letter</Link>
 
-          {/* 👇 NOT LOGGED IN */}
           {!token && (
             <>
               <Link to="/login">Login</Link>
-
               <Link to="/signup" className="secondary-button">
                 Sign Up
               </Link>
             </>
           )}
 
-          {/* 👇 SHOW SUBSCRIBE IF NOT SUBSCRIBED (regardless of login) */}
+          {token && <Link to="/profile">Profile</Link>}
+
           {!subscribed && (
             <Link to="/subscribe" className="subscribe-btn">
               Subscribe
             </Link>
           )}
 
-          {/* 👇 LOGGED IN */}
           {token && (
             <button onClick={handleLogout} className="logout-button">
               Logout

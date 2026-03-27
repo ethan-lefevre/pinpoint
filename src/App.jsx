@@ -86,6 +86,8 @@ function AnimatedRoutes() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </AnimatePresence>
   );

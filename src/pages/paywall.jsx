@@ -5,36 +5,44 @@ function Paywall({ user }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-const handleSubscribe = async () => {
-  try {
-    setLoading(true);
-    setError("");
+  const handleSubscribe = async () => {
+    try {
+      setLoading(true);
+      setError("");
 
-    const res = await fetch("https://pinpoint-srng.onrender.com/api/stripe/create-checkout-session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({}),
-    });
+      const token = localStorage.getItem("token");
 
-    const data = await res.json();
+      if (!token) {
+        throw new Error("You must be logged in to subscribe");
+      }
 
-    if (!res.ok) {
-      throw new Error(data.message || "Failed to start checkout");
+      const res = await fetch(
+        "https://pinpoint-srng.onrender.com/api/stripe/create-checkout-session",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to start checkout");
+      }
+
+      if (!data.url) {
+        throw new Error("No checkout URL returned");
+      }
+
+      window.location.href = data.url;
+    } catch (err) {
+      console.error("Subscribe error:", err);
+      setError(err.message || "Something went wrong");
+      setLoading(false);
     }
-
-    if (!data.url) {
-      throw new Error("No checkout URL returned");
-    }
-
-    window.location.href = data.url;
-  } catch (err) {
-    console.error("Subscribe error:", err);
-    setError(err.message || "Something went wrong");
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="paywall-container">
@@ -46,13 +54,13 @@ const handleSubscribe = async () => {
 
           <p className="paywall-subtitle">
             Get rankings, results, and exclusive wrestling content for just{" "}
-            <strong>$3/month</strong>.
+            <strong>$8/month</strong>.
           </p>
 
           <ul className="paywall-features">
             <li>See every division and weight class ranking</li>
             <li>Stay up to date with tournament results</li>
-            <li>Read Letter of the Week and premium breakdowns</li>
+            <li>Rankings breakdowns</li>
             <li>Access future premium content and features</li>
           </ul>
 

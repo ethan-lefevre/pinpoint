@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../config";
+import "../index.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
     setLoading(true);
+    setError("");
 
     try {
       const normalizedEmail = email.trim().toLowerCase();
@@ -32,11 +35,8 @@ function Login() {
       try {
         data = await response.json();
       } catch (jsonError) {
-        console.error("Failed to parse login response as JSON:", jsonError);
+        console.error("Failed to parse login response:", jsonError);
       }
-
-      console.log("login status:", response.status);
-      console.log("login response:", data);
 
       if (response.ok && data.token) {
         localStorage.setItem("token", data.token);
@@ -44,42 +44,74 @@ function Login() {
         return;
       }
 
-      alert(data.message || data.error || "Login failed");
+      setError(data.message || data.error || "Login failed");
     } catch (error) {
       console.error("Login error:", error);
-      alert("Login failed");
+      setError("Login failed");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="paywall-container">
+      <div className="paywall-page">
+        <div className="paywall-card">
+          <div className="paywall-badge">PinPoint</div>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          autoComplete="email"
-          required
-        />
+          <h1 className="paywall-title">Welcome Back</h1>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          autoComplete="current-password"
-          required
-        />
+          <p className="paywall-subtitle">
+            Log in to access rankings, results, and premium content.
+          </p>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
+          <form onSubmit={handleLogin} className="signup-form">
+            <input
+              className="signup-input"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              required
+            />
+
+            <input
+              className="signup-input"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
+
+            <button
+              type="submit"
+              className="subscribe-button"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Log In"}
+            </button>
+          </form>
+
+          {error && <p className="paywall-error">{error}</p>}
+
+          {/* 👇 SIGNUP BUTTON */}
+          <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
+            <p style={{ marginBottom: "0.5rem", color: "#aaa" }}>
+              Don’t have an account?
+            </p>
+
+            <button
+              className="secondary-button"
+              onClick={() => navigate("/signup")}
+            >
+              Create Account
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

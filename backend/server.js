@@ -43,12 +43,20 @@ app.post("/signup", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required",
+      });
+    }
+
     const normalizedEmail = email.trim().toLowerCase();
 
     const existingUser = await User.findOne({ email: normalizedEmail });
 
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({
+        message: "User already exists",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -56,17 +64,25 @@ app.post("/signup", async (req, res) => {
     const user = new User({
       email: normalizedEmail,
       password: hashedPassword,
+      subscribed: false,
+      stripeCustomerId: null,
+      stripeSubscriptionId: null,
+      subscriptionStatus: null,
     });
 
     await user.save();
 
-    res.json({
+    const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: "7d" });
+
+    res.status(201).json({
       message: "User created successfully",
+      token,
+      subscribed: user.subscribed,
     });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({
-      error: "Signup failed",
+      message: "Signup failed",
     });
   }
 });

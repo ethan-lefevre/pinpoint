@@ -21,8 +21,8 @@ router.post("/create-checkout-session", authMiddleware, async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.CLIENT_URL}/signup?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.CLIENT_URL}/paywall`,
+      success_url: `${process.env.CLIENT_URL}/?success=true`,
+      cancel_url: `${process.env.CLIENT_URL}/subscribe`,
       allow_promotion_codes: true,
 
       client_reference_id: user._id.toString(),

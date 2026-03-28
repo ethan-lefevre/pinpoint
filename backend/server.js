@@ -1,5 +1,6 @@
 require("dotenv").config();
 const path = require("path");
+const crypto = require("crypto");
 const tournaments = require("./data/results");
 const getRankings = require("./data/rankings");
 const letter = require("./data/letter");
@@ -10,7 +11,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("./middleware/authMiddleware");
 const subscriptionMiddleware = require("./middleware/subscriptionMiddleware");
+const verifiedEmailMiddleware = require("./middleware/verifiedEmailMiddleware");
 const User = require("./models/User");
+const EmailVerificationToken = require("./models/EmailVerificationToken");
+const sendVerificationEmail = require("./utils/sendVerificationEmail");
 const { jwtSecret, port } = require("./config");
 const stripeRoutes = require("./routes/stripe");
 const stripeWebhookRoutes = require("./routes/stripeWebhook");
@@ -68,16 +72,19 @@ app.post("/signup", async (req, res) => {
       stripeCustomerId: null,
       stripeSubscriptionId: null,
       subscriptionStatus: null,
+      emailVerified: false,
     });
 
     await user.save();
+    await sendVerificationEmail(user);
 
     const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: "7d" });
 
     res.status(201).json({
-      message: "User created successfully",
+      message: "User created successfully. Please verify your email.",
       token,
       subscribed: user.subscribed,
+      emailVerified: user.emailVerified,
     });
   } catch (error) {
     console.error("Signup error:", error);
@@ -93,25 +100,13 @@ app.post("/login", async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    console.log("LOGIN ATTEMPT");
-    console.log("email from body:", JSON.stringify(email));
-    console.log("normalized email:", JSON.stringify(normalizedEmail));
-    console.log("password from body:", JSON.stringify(password));
-
     const user = await User.findOne({ email: normalizedEmail });
-
-    console.log("user found:", !!user);
 
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    console.log("db email:", user.email);
-    console.log("db hash:", user.password);
-
     const validPassword = await bcrypt.compare(password, user.password);
-
-    console.log("password valid:", validPassword);
 
     if (!validPassword) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -123,12 +118,69 @@ app.post("/login", async (req, res) => {
       message: "Login successful",
       token,
       subscribed: user.subscribed,
+      emailVerified: user.emailVerified,
     });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({
       error: "Login failed",
     });
+  }
+});
+
+app.post("/verify-email", async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ message: "Missing token" });
+    }
+
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
+    const verificationRecord = await EmailVerificationToken.findOne({ tokenHash });
+
+    if (!verificationRecord) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    if (verificationRecord.expiresAt < new Date()) {
+      await EmailVerificationToken.deleteOne({ _id: verificationRecord._id });
+      return res.status(400).json({ message: "Token expired" });
+    }
+
+    const user = await User.findById(verificationRecord.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.emailVerified = true;
+    await user.save();
+
+    await EmailVerificationToken.deleteMany({ userId: user._id });
+
+    res.json({ message: "Email verified successfully" });
+  } catch (error) {
+    console.error("Verify email error:", error);
+    res.status(500).json({ message: "Email verification failed" });
+  }
+});
+
+app.post("/resend-verification-email", authMiddleware, async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (user.emailVerified) {
+      return res.status(400).json({ message: "Email already verified" });
+    }
+
+    await sendVerificationEmail(user);
+
+    res.json({ message: "Verification email sent" });
+  } catch (error) {
+    console.error("Resend verification error:", error);
+    res.status(500).json({ message: "Failed to resend verification email" });
   }
 });
 
@@ -140,6 +192,7 @@ app.get("/profile", authMiddleware, async (req, res) => {
       email: user.email,
       subscribed: user.subscribed,
       subscriptionStatus: user.subscriptionStatus,
+      emailVerified: user.emailVerified,
     });
   } catch (error) {
     console.error("Profile error:", error);
@@ -147,29 +200,47 @@ app.get("/profile", authMiddleware, async (req, res) => {
   }
 });
 
-app.get("/results", authMiddleware, subscriptionMiddleware, (req, res) => {
-  res.json({
-    tournaments,
-  });
-});
-
-app.get("/letters", authMiddleware, subscriptionMiddleware, (req, res) => {
-  res.json(letter);
-});
-
-app.get("/rankings", authMiddleware, subscriptionMiddleware, async (req, res) => {
-  try {
-    const rankings = await getRankings();
-
+app.get(
+  "/results",
+  authMiddleware,
+  verifiedEmailMiddleware,
+  subscriptionMiddleware,
+  (req, res) => {
     res.json({
-      rankings,
-      lastUpdated: new Date().toISOString(),
+      tournaments,
     });
-  } catch (error) {
-    console.error("Rankings error:", error);
-    res.status(500).json({ error: "Failed to load rankings" });
   }
-});
+);
+
+app.get(
+  "/letters",
+  authMiddleware,
+  verifiedEmailMiddleware,
+  subscriptionMiddleware,
+  (req, res) => {
+    res.json(letter);
+  }
+);
+
+app.get(
+  "/rankings",
+  authMiddleware,
+  verifiedEmailMiddleware,
+  subscriptionMiddleware,
+  async (req, res) => {
+    try {
+      const rankings = await getRankings();
+
+      res.json({
+        rankings,
+        lastUpdated: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error("Rankings error:", error);
+      res.status(500).json({ error: "Failed to load rankings" });
+    }
+  }
+);
 
 async function startServer() {
   try {

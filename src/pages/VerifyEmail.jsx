@@ -5,14 +5,12 @@ export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const [status, setStatus] = useState("loading"); 
   const [message, setMessage] = useState("Verifying your email...");
 
   useEffect(() => {
     const token = searchParams.get("token");
 
     if (!token) {
-      setStatus("error");
       setMessage("Invalid verification link.");
       return;
     }
@@ -33,17 +31,14 @@ export default function VerifyEmail() {
           throw new Error(data.message || "Verification failed");
         }
 
-        setStatus("success");
-        setMessage("Your email has been verified!");
+        setMessage("Email verified! Redirecting...");
 
-        // redirect after 3 sec
         setTimeout(() => {
           navigate("/login");
-        }, 3000);
+        }, 2000);
 
       } catch (err) {
-        setStatus("error");
-        setMessage(err.message || "Something went wrong.");
+        setMessage(err.message || "Verification failed.");
       }
     };
 
@@ -51,36 +46,20 @@ export default function VerifyEmail() {
   }, [searchParams, navigate]);
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        
-        {/* Icon */}
-        <div style={styles.icon}>
-          {status === "loading" && "⏳"}
-          {status === "success" && "✅"}
-          {status === "error" && "❌"}
-        </div>
-
-        {/* Title */}
-        <h1 style={styles.title}>
-          {status === "loading" && "Verifying..."}
-          {status === "success" && "Verified"}
-          {status === "error" && "Verification Failed"}
-        </h1>
-
-        {/* Message */}
-        <p style={styles.message}>{message}</p>
-
-        {/* Button */}
-        {status !== "loading" && (
-          <button
-            style={styles.button}
-            onClick={() => navigate("/login")}
-          >
-            Go to Login
-          </button>
-        )}
-      </div>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#0b1220",
+        color: "white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "Inter, sans-serif",
+        textAlign: "center",
+        padding: "2rem"
+      }}
+    >
+      <h1>{message}</h1>
     </div>
   );
 }

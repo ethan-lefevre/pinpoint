@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/protectedroute.jsx";
 import Login from "./pages/login.jsx";
 import PageWrapper from "./components/pagewrapper.jsx";
 import Profile from "./pages/profile.jsx";
+import VerifyEmail from "./pages/VerifyEmail.jsx";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -89,6 +90,15 @@ function AnimatedRoutes() {
         />
 
         <Route path="/profile" element={<Profile />} />
+
+        <Route
+          path="/verify-email"
+          element={
+          <PageWrapper>
+            <VerifyEmail />
+          </PageWrapper>
+  }
+/>
       </Routes>
     </AnimatePresence>
   );

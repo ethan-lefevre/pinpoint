@@ -4,7 +4,6 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-
   const [message, setMessage] = useState("Verifying your email...");
 
   useEffect(() => {
@@ -25,18 +24,24 @@ export default function VerifyEmail() {
           body: JSON.stringify({ token }),
         });
 
-        const data = await res.json();
+        const text = await res.text();
+        let data = {};
 
-        if (!res.ok) {
-          throw new Error(data.message || "Verification failed");
+        try {
+          data = text ? JSON.parse(text) : {};
+        } catch {
+          data = { message: text || "Verification failed." };
         }
 
-        setMessage("Email verified! Redirecting...");
+        if (!res.ok) {
+          throw new Error(data.message || "Verification failed.");
+        }
+
+        setMessage(data.message || "Email verified! Redirecting...");
 
         setTimeout(() => {
           navigate("/login");
         }, 2000);
-
       } catch (err) {
         setMessage(err.message || "Verification failed.");
       }
@@ -56,7 +61,7 @@ export default function VerifyEmail() {
         justifyContent: "center",
         fontFamily: "Inter, sans-serif",
         textAlign: "center",
-        padding: "2rem"
+        padding: "2rem",
       }}
     >
       <h1>{message}</h1>

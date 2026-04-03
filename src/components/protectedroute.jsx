@@ -23,6 +23,13 @@ function ProtectedRoute({ children, endpoint }) {
           },
         });
 
+        let data = {};
+        try {
+          data = await response.json();
+        } catch (err) {
+          console.error("Failed to parse protected route response:", err);
+        }
+
         if (response.status === 401) {
           navigate("/login");
           setAllowed(false);
@@ -30,7 +37,21 @@ function ProtectedRoute({ children, endpoint }) {
         }
 
         if (response.status === 403) {
-          navigate("/subscribe");
+          const message = data.message || "";
+
+          if (message.toLowerCase().includes("verify your email")) {
+            navigate("/profile");
+            setAllowed(false);
+            return;
+          }
+
+          if (message.toLowerCase().includes("subscription")) {
+            navigate("/subscribe");
+            setAllowed(false);
+            return;
+          }
+
+          navigate("/profile");
           setAllowed(false);
           return;
         }

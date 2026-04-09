@@ -1,7 +1,7 @@
 require("dotenv").config();
 const path = require("path");
 const crypto = require("crypto");
-const tournaments = require("./data/results");
+const tournaments = require("./data/resultsLoader");
 const getRankings = require("./data/rankings");
 const letter = require("./data/letter");
 const express = require("express");
@@ -223,10 +223,19 @@ app.get(
   authMiddleware,
   verifiedEmailMiddleware,
   subscriptionMiddleware,
-  (req, res) => {
-    res.json({
-      tournaments,
-    });
+  async (req, res) => {
+    try {
+      const tournaments = await getResults();
+
+      res.json({
+        tournaments,
+      });
+    } catch (error) {
+      console.error("Results error:", error);
+      res.status(500).json({
+        error: "Failed to load results",
+      });
+    }
   }
 );
 

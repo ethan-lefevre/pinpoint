@@ -908,3 +908,9 @@ select {
   border-color: #888;
   color: #fff;
 }
+
+.verify-success {
+  margin-bottom: 18px;
+  color: #7ef0ad;
+  font-weight: 600;
+}

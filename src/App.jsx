@@ -13,6 +13,7 @@ import Login from "./pages/login.jsx";
 import PageWrapper from "./components/pagewrapper.jsx";
 import Profile from "./pages/profile.jsx";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
+import VerifyRequired from "./pages/VerifyRequired.jsx";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -97,6 +98,15 @@ function AnimatedRoutes() {
           <PageWrapper>
             <VerifyEmail />
           </PageWrapper>
+  }
+/>
+
+<Route
+  path="/verify-required"
+  element={
+    <PageWrapper>
+      <VerifyRequired />
+    </PageWrapper>
   }
 />
       </Routes>

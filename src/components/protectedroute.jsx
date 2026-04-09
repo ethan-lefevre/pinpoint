@@ -40,7 +40,7 @@ function ProtectedRoute({ children, endpoint }) {
           const message = data.message || "";
 
           if (message.toLowerCase().includes("verify your email")) {
-            navigate("/profile");
+            navigate("/verify-required");
             setAllowed(false);
             return;
           }

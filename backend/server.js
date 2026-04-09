@@ -24,7 +24,10 @@ const app = express();
 // IMPORTANT: Stripe webhook route must come BEFORE express.json()
 app.use("/api/stripe", stripeWebhookRoutes);
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://pinpoint-smoky-three.vercel.app',
+  credentials: true
+}));
 app.use(express.json());
 
 // Normal Stripe routes can come after express.json()
@@ -76,20 +79,35 @@ app.post("/signup", async (req, res) => {
     });
 
     await user.save();
-    await sendVerificationEmail(user);
+
+    // 👇 EMAIL IS NOW NON-BLOCKING
+    let emailSent = true;
+    let emailError = null;
+
+    try {
+      await sendVerificationEmail(user);
+    } catch (err) {
+      console.error("Verification email failed:", err);
+      emailSent = false;
+      emailError = err.message;
+    }
 
     const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: "7d" });
 
     res.status(201).json({
-      message: "User created successfully. Please verify your email.",
+      message: emailSent
+        ? "User created successfully. Please verify your email."
+        : "User created successfully, but verification email could not be sent.",
       token,
       subscribed: user.subscribed,
       emailVerified: user.emailVerified,
+      emailSent,
+      emailError,
     });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({
-      message: "Signup failed",
+      message: error.message || "Signup failed",
     });
   }
 });

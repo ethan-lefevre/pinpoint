@@ -1,7 +1,7 @@
 require("dotenv").config();
 const path = require("path");
 const crypto = require("crypto");
-const tournaments = require("./data/resultsLoader");
+const getResults = require("./data/resultsLoader");
 const getRankings = require("./data/rankings");
 const letter = require("./data/letter");
 const express = require("express");
